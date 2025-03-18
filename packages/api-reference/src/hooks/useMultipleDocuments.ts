@@ -4,7 +4,6 @@ import {
   type ApiReferenceConfiguration,
   type ApiReferenceConfigurationWithSources,
   type SpecConfiguration,
-  apiReferenceConfigurationSchema,
   isConfigurationWithSources,
 } from '@scalar/types/api-reference'
 import GithubSlugger from 'github-slugger'
@@ -154,18 +153,18 @@ export const useMultipleDocuments = ({ configuration, initialIndex }: UseMultipl
   const selectedConfiguration = computed(() => {
     // Multiple sources
     if (configuration.value && isConfigurationWithSources(configuration.value)) {
-      return apiReferenceConfigurationSchema.parse({
+      return {
         ...configuration.value,
         ...configuration.value?.sources?.[selectedDocumentIndex.value],
         ...availableDocuments.value[selectedDocumentIndex.value],
-      })
+      }
     }
 
     const flattenedConfig = [configuration.value].flat()[selectedDocumentIndex.value] ?? {}
-    return apiReferenceConfigurationSchema.parse({
+    return {
       ...flattenedConfig,
       ...availableDocuments.value[selectedDocumentIndex.value],
-    })
+    }
   })
 
   // Update URL when selection changes
